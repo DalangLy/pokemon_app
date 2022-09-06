@@ -120,7 +120,16 @@ class _HomePageState extends State<HomePage> {
                         onFavoriteIconTap: (isFavorite){
                           BlocProvider.of<AddToFavoriteBloc>(context).addToFavorite(selectedPokemonId: eachPokemon.id, isFavorite: isFavorite);
                         },
-                        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => PokemonDetailPage(selectedPokemon: eachPokemon,),),),
+                        onTap: () {
+                          late final Pokemon evolvedFromPokemon;
+                          try{
+                            evolvedFromPokemon = state.allPokemon.where((element) => element.id == eachPokemon.evolvedFrom).first;
+                          }catch(ex){
+                            evolvedFromPokemon = eachPokemon;
+                          }
+                          final List<Pokemon> evolutionsFromPokemon = state.allPokemon.where((e) => eachPokemon.evolutions.contains(e.id)).toList();
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PokemonDetailPage(selectedPokemon: eachPokemon, evolvedFromPokemon: evolvedFromPokemon, evolutionsFromPokemon: evolutionsFromPokemon),),);
+                        },
                       );
                     },
                   );
@@ -141,7 +150,16 @@ class _HomePageState extends State<HomePage> {
                         onFavoriteIconTap: (isFavorite){
                           BlocProvider.of<AddToFavoriteBloc>(context).addToFavorite(selectedPokemonId: eachPokemon.id, isFavorite: isFavorite);
                         },
-                        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => PokemonDetailPage(selectedPokemon: eachPokemon,),),),
+                        onTap: () {
+                          late final Pokemon evolvedFromPokemon;
+                          try{
+                            evolvedFromPokemon = state.allPokemon.where((element) => element.id == eachPokemon.evolvedFrom).first;
+                          }catch(ex){
+                            evolvedFromPokemon = eachPokemon;
+                          }
+                          final List<Pokemon> evolutionsFromPokemon = state.allPokemon.where((e) => eachPokemon.evolutions.contains(e.id)).toList();
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PokemonDetailPage(selectedPokemon: eachPokemon, evolvedFromPokemon: evolvedFromPokemon, evolutionsFromPokemon: evolutionsFromPokemon),),);
+                        },
                       );
                     },
                   );

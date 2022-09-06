@@ -26,7 +26,7 @@ class GetAllPokemonBloc extends Bloc<GetAllPokemonEvent, GetAllPokemonState> {
       else if(event is FilterByFavoritePokemon){
         emit(FilterByFavoritePokemonInProgress());
         final List<Pokemon> allFavoritePokemon = allPokemon.where((e) => e.isFavorite).toList();
-        emit(FilterByFavoritePokemonSuccess(allFavoritePokemon: allFavoritePokemon));
+        emit(FilterByFavoritePokemonSuccess(allFavoritePokemon: allFavoritePokemon, allPokemon: allPokemon,),);
       }
       else if(event is RefreshOffline){
         emit(const RefreshOfflineInProgress());

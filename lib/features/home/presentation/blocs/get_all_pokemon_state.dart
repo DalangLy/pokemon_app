@@ -39,7 +39,8 @@ class FilterByFavoritePokemonInProgress extends GetAllPokemonState {
 
 class FilterByFavoritePokemonSuccess extends GetAllPokemonState {
   final List<Pokemon> allFavoritePokemon;
-  const FilterByFavoritePokemonSuccess({required this.allFavoritePokemon,});
+  final List<Pokemon> allPokemon;
+  const FilterByFavoritePokemonSuccess({required this.allFavoritePokemon, required this.allPokemon,});
 
   @override
   List<Object> get props => [];

@@ -4,7 +4,9 @@ import 'package:pokemon_app/features/home/domain/entities/pokemon.dart';
 
 class PokemonDetailPage extends StatelessWidget {
   final Pokemon selectedPokemon;
-  const PokemonDetailPage({Key? key, required this.selectedPokemon,}) : super(key: key);
+  final Pokemon evolvedFromPokemon;
+  final List<Pokemon> evolutionsFromPokemon;
+  const PokemonDetailPage({Key? key, required this.selectedPokemon, required this.evolvedFromPokemon, required this.evolutionsFromPokemon,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,16 @@ class PokemonDetailPage extends StatelessWidget {
                         ),
                       ),
                       Card(
+                        child: Column(
+                          children: [
+                            BarDetail(label: 'Special Attack', value: selectedPokemon.specialAttack, iconPath: 'assets/stopwatch.png',),
+                            BarDetail(label: 'Special Defense', value: selectedPokemon.specialDefense, iconPath: 'assets/health.png',),
+                            BarDetail(label: 'Total', value: selectedPokemon.total, iconPath: 'assets/explosion.png',),
+                            BarDetail(label: 'Base Exp', value: int.parse(selectedPokemon.baseExp), iconPath: 'assets/weapons.png',),
+                          ],
+                        ),
+                      ),
+                      Card(
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Column(
@@ -63,13 +75,150 @@ class PokemonDetailPage extends StatelessWidget {
                               Text('Description', style: Theme.of(context).textTheme.headline6,),
                               const Divider(),
                               Text(selectedPokemon.xDescription),
-                              Text(selectedPokemon.yDescription)
+                              Text(selectedPokemon.yDescription),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Evolved From', style: Theme.of(context).textTheme.headline6,),
+                              const Divider(),
+                              Expanded(
+                                child: Center(
+                                  child: FittedBox(
+                                    fit: BoxFit.fill,
+                                    child: Image(image: NetworkImage(evolvedFromPokemon.imageUrl),),
+                                  ),
+                                ),
+                              ),
+                              Text(evolvedFromPokemon.name,)
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Gender', style: Theme.of(context).textTheme.headline6,),
+                              const Divider(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Center(
+                                          child: FittedBox(
+                                            fit: BoxFit.fill,
+                                            child: Image.asset('assets/dog-male.png', width: 120,)
+                                          ),
+                                        ),
+                                        const Text('Male Percentage'),
+                                        Text(evolvedFromPokemon.malePercentage,)
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Center(
+                                          child: FittedBox(
+                                            fit: BoxFit.fill,
+                                            child: Image.asset('assets/dog-female.png', width: 120,)
+                                          ),
+                                        ),
+                                        const Text('Female Percentage'),
+                                        Text(evolvedFromPokemon.femalePercentage,)
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Egg Groups', style: Theme.of(context).textTheme.headline6,),
+                              const Divider(),
+                              Text(selectedPokemon.eggGroups,),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Weaknesses', style: Theme.of(context).textTheme.headline6,),
+                              const Divider(),
+                              ...selectedPokemon.weaknesses.map((e) => Text(e),),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Abilities', style: Theme.of(context).textTheme.headline6,),
+                              const Divider(),
+                              ...selectedPokemon.abilities.map((e) => Text(e),),
                             ],
                           ),
                         ),
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 20,),
+                //evolution
+                Text('Evolutions', style: Theme.of(context).textTheme.headline6,),
+                ...evolutionsFromPokemon.map((e) {
+                  if(evolutionsFromPokemon.indexOf(e) == (evolutionsFromPokemon.length-1)){
+                    return Center(child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                      child: Column(
+                        children: [
+                          Image.network(e.imageUrl),
+                          Text(e.name),
+                        ],
+                      ),
+                    ),
+                    );
+                  }
+                  else{
+                    return Center(child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        children: [
+                          Image.network(e.imageUrl),
+                          Text(e.name),
+                          const SizedBox(height: 20,),
+                          const Icon(Icons.arrow_downward)
+                        ],
+                      ),
+                    ),
+                    );
+                  }
+                },
                 ),
               ],
             ),
