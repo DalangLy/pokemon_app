@@ -19,10 +19,19 @@ class GetAllPokemonBloc extends Bloc<GetAllPokemonEvent, GetAllPokemonState> {
           emit(const GetAllPokemonFailed(message: 'Failed Message'),);
         }
       }
+      else if(event is RefreshOfflineData){
+        emit(GetAllPokemonInProgress());
+        await Future.delayed(const Duration(seconds: 3));
+        emit(GetAllPokemonSuccess(allPokemon: event.currentPokemonList));
+      }
     });
   }
 
   void getAllPokemon(){
     add(GetAllPokemon());
+  }
+
+  void refreshOfflineData({required List<Pokemon> currentPokemonList,}){
+    add(RefreshOfflineData(currentPokemonList: currentPokemonList,),);
   }
 }

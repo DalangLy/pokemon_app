@@ -27,6 +27,7 @@ class Pokemon {
     required this.evolvedFrom,
     required this.reason,
     required this.baseExp,
+    this.isFavorite = false,
   });
 
   final String name;
@@ -56,6 +57,7 @@ class Pokemon {
   final String evolvedFrom;
   final String reason;
   final String baseExp;
+  bool isFavorite;
 
   Pokemon copyWith({
     required String name,
@@ -85,6 +87,7 @@ class Pokemon {
     required String evolvedFrom,
     required String reason,
     required String baseExp,
+    required bool isFavorite,
   }) =>
       Pokemon(
         name: name,
@@ -114,5 +117,6 @@ class Pokemon {
         evolvedFrom: evolvedFrom,
         reason: reason,
         baseExp: baseExp,
+        isFavorite: isFavorite,
       );
 }

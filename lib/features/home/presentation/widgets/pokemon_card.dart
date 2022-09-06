@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pokemon_app/features/home/domain/entities/pokemon.dart';
 
 class PokemonCard extends StatelessWidget {
@@ -33,12 +34,7 @@ class PokemonCard extends StatelessWidget {
                         return SizedBox(
                           height: _imageHeight,
                           child: Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
+                            child: Lottie.asset('assets/68374-animation-image.json'),
                           ),
                         );
                       },
@@ -104,7 +100,6 @@ class _FavoriteIconButtonState extends State<FavoriteIconButton> {
         setState(() {
           _isFavoriteSelected = !_isFavoriteSelected;
         });
-        if(widget.onTap != null) return;
         widget.onTap!(_isFavoriteSelected);
       },
     );
