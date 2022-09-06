@@ -18,3 +18,11 @@ class RefreshOffline extends GetAllPokemonEvent {
   @override
   List<Object> get props => [];
 }
+
+class SearchPokemon extends GetAllPokemonEvent {
+  final String pokemonName;
+  const SearchPokemon({required this.pokemonName});
+
+  @override
+  List<Object> get props => [];
+}

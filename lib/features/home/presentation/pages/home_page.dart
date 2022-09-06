@@ -27,6 +27,8 @@ class _HomePageState extends State<HomePage> {
 
   bool isFavorite = false;
 
+  String searchKeyword = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,33 +40,63 @@ class _HomePageState extends State<HomePage> {
               context: context,
               builder: (BuildContext context) {
                 return SizedBox(
-                  height: 200,
+                  height: 130,
                   child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                          title: Text(AppLocalizations.of(context)!.english,),
-                          onTap: (){
-                            BlocProvider.of<LocalizeBloc>(context).changeLocale(locale: 'en');
-                          },
-                        ),
-                        ListTile(
-                          title: Text(AppLocalizations.of(context)!.khmer,),
-                          onTap: (){
-                            BlocProvider.of<LocalizeBloc>(context).changeLocale(locale: 'km');
-                          },
-                        ),
-                      ],
+                    child: BlocBuilder<LocalizeBloc, LocalizeState>(
+                      builder: (context, state) {
+                        String locale = 'en';
+                        if(state is ChangeLocaleSuccess){
+                          locale = state.locale;
+                        }
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(AppLocalizations.of(context)!.english,),
+                              onTap: (){
+                                BlocProvider.of<LocalizeBloc>(context).changeLocale(locale: 'en');
+                              },
+                              leading: SizedBox(
+                                height: double.infinity,
+                                width: 30,
+                                child: Image.asset('assets/united-states.png'),
+                              ),
+                              selectedTileColor: Colors.blue,
+                              selected: locale == 'en',
+                              selectedColor: Colors.white,
+                            ),
+                            ListTile(
+                              title: Text(AppLocalizations.of(context)!.khmer,),
+                              onTap: (){
+                                BlocProvider.of<LocalizeBloc>(context).changeLocale(locale: 'km');
+                              },
+                              leading: SizedBox(
+                                height: double.infinity,
+                                width: 30,
+                                child: Image.asset('assets/cambodia.png'),
+                              ),
+                              selectedTileColor: Colors.blue,
+                              selected: locale == 'km',
+                              selectedColor: Colors.white,
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 );
               },
             );
-          }, icon: const Icon(Icons.language,),),
+          }, 
+          icon: const Icon(Icons.language,),),
           const ToggleThemeModeIconButton(),
         ],
+        leadingWidth: 50,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 14.0,),
+          child: Image.asset('assets/pokemon.png',),
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -124,14 +156,17 @@ class _HomePageState extends State<HomePage> {
         onTap: (index) {
           if(index == 0){
             if(isFavorite){
-              BlocProvider.of<GetAllPokemonBloc>(context).filterByFavoritePokemon();
+              BlocProvider.of<GetAllPokemonBloc>(context).refreshOffline();
             }
             else{
-              BlocProvider.of<GetAllPokemonBloc>(context).refreshOffline();
+              BlocProvider.of<GetAllPokemonBloc>(context).filterByFavoritePokemon();
             }
             setState(() {
               isFavorite = !isFavorite;
             });
+          }
+          else if(index == 1){
+            _showSearchDialog();
           }
         },
         items: <BottomNavigationBarItem>[
@@ -139,6 +174,34 @@ class _HomePageState extends State<HomePage> {
           const BottomNavigationBarItem(label: '', icon: Icon(Icons.search),),
         ],
       ),
+    );
+  }
+
+  Future<void> _showSearchDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          alignment: Alignment.bottomCenter,
+          actionsAlignment: MainAxisAlignment.center,
+          contentPadding: EdgeInsets.zero,
+          content: TextFormField(
+            initialValue: searchKeyword,
+            autofocus: true,
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              border: InputBorder.none,
+              hintText: 'Search'
+            ),
+            onChanged: (value) {
+              if(value == '' || value.isEmpty) return;
+              searchKeyword = value;
+              BlocProvider.of<GetAllPokemonBloc>(context).searchPokemon(pokemonName: value);
+            },
+          ),
+        );
+      },
     );
   }
 }

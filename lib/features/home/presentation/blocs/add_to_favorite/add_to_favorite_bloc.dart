@@ -14,7 +14,6 @@ class AddToFavoriteBloc extends Bloc<AddToFavoriteEvent, AddToFavoriteState> {
       if(event is AddToFavorite){
         emit(AddToFavoriteInProgress());
         _bloc.allPokemon.where((element) => element.id == event.selectedPokemonId).first.isFavorite = event.isFavorite;
-        _bloc.refreshOffline();
         emit(AddToFavoriteSuccess());
       }
     });

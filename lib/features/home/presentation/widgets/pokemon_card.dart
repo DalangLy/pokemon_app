@@ -100,6 +100,18 @@ class _FavoriteIconButtonState extends State<FavoriteIconButton> {
   }
 
   @override
+  void didChangeDependencies() {
+    _isFavoriteSelected = widget.isFavorite;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(covariant FavoriteIconButton oldWidget) {
+    _isFavoriteSelected = widget.isFavorite;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: _isFavoriteSelected ? const Icon(Icons.favorite, color: Colors.red,) : const Icon(Icons.favorite_outline),

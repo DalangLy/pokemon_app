@@ -32,6 +32,11 @@ class GetAllPokemonBloc extends Bloc<GetAllPokemonEvent, GetAllPokemonState> {
         emit(const RefreshOfflineInProgress());
         emit(GetAllPokemonSuccess(allPokemon: allPokemon),);
       }
+      else if(event is SearchPokemon){
+        emit(const RefreshOfflineInProgress());
+        final List<Pokemon> foundPokemon = allPokemon.where((element) => element.name.toLowerCase().contains(event.pokemonName.toLowerCase())).toList();
+        emit(GetAllPokemonSuccess(allPokemon: foundPokemon),);
+      }
     });
   }
 
@@ -45,5 +50,9 @@ class GetAllPokemonBloc extends Bloc<GetAllPokemonEvent, GetAllPokemonState> {
 
   void refreshOffline(){
     add(RefreshOffline());
+  }
+
+  void searchPokemon({required String pokemonName,}){
+    add(SearchPokemon(pokemonName: pokemonName),);
   }
 }
