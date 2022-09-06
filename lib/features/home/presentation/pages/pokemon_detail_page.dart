@@ -151,10 +151,10 @@ class FullSizedImagePreview extends StatelessWidget {
             left: 5.0,
             child: Chip(label: Text(pokemon.category), avatar: const Icon(Icons.category),),
           ),
-          const Positioned(
+          Positioned(
             top: 5.0,
             right: 5.0,
-            child: Icon(Icons.favorite, color: Colors.red, size: 40,),
+            child: pokemon.isFavorite ? const Icon(Icons.favorite, color: Colors.red, size: 40,) : const Icon(Icons.favorite_outline, size: 40,),
           ),
         ],
       ),

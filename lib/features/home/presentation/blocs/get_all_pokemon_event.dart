@@ -9,12 +9,22 @@ class GetAllPokemon extends GetAllPokemonEvent{
   List<Object?> get props => [];
 }
 
-class RefreshOfflineData extends GetAllPokemonEvent {
+class RefreshToUpdateFavorite extends GetAllPokemonEvent {
 
   final List<Pokemon> currentPokemonList;
 
-  const RefreshOfflineData({required this.currentPokemonList,});
+  const RefreshToUpdateFavorite({required this.currentPokemonList,});
 
+  @override
+  List<Object> get props => [];
+}
+
+class FilterByFavoritePokemon extends GetAllPokemonEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class RefreshOffline extends GetAllPokemonEvent {
   @override
   List<Object> get props => [];
 }

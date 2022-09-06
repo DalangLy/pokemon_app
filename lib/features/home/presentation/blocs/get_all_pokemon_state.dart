@@ -31,3 +31,23 @@ class GetAllPokemonFailed extends GetAllPokemonState{
   @override
   List<Object?> get props => [];
 }
+
+class FilterByFavoritePokemonInProgress extends GetAllPokemonState {
+  @override
+  List<Object> get props => [];
+}
+
+class FilterByFavoritePokemonSuccess extends GetAllPokemonState {
+  final List<Pokemon> allFavoritePokemon;
+  const FilterByFavoritePokemonSuccess({required this.allFavoritePokemon,});
+
+  @override
+  List<Object> get props => [];
+}
+
+class RefreshOfflineInProgress extends GetAllPokemonState {
+  const RefreshOfflineInProgress();
+
+  @override
+  List<Object> get props => [];
+}

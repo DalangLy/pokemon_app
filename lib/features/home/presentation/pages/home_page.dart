@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pokemon_app/cores/blocs/localize/localize_bloc.dart';
 import 'package:pokemon_app/cores/blocs/theme/theme_bloc.dart';
 import 'package:pokemon_app/features/home/domain/entities/pokemon.dart';
 import 'package:pokemon_app/features/home/presentation/blocs/add_to_favorite/add_to_favorite_bloc.dart';
@@ -24,6 +25,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,11 +46,15 @@ class _HomePageState extends State<HomePage> {
                       children: <Widget>[
                         ListTile(
                           title: const Text('English'),
-                          onTap: (){},
+                          onTap: (){
+                            BlocProvider.of<LocalizeBloc>(context).changeLocale(locale: 'en');
+                          },
                         ),
                         ListTile(
                           title: const Text('Khmer'),
-                          onTap: (){},
+                          onTap: (){
+                            BlocProvider.of<LocalizeBloc>(context).changeLocale(locale: 'km');
+                          },
                         ),
                       ],
                     ),
@@ -86,6 +93,27 @@ class _HomePageState extends State<HomePage> {
                     },
                   );
                 }
+                else if(state is FilterByFavoritePokemonSuccess){
+                  return GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 6,
+                        crossAxisSpacing: 6,
+                        childAspectRatio: 0.68
+                    ),
+                    itemCount: state.allFavoritePokemon.length,
+                    itemBuilder: (context, index) {
+                      final Pokemon eachPokemon = state.allFavoritePokemon[index];
+                      return PokemonCard(
+                        pokemon: eachPokemon,
+                        onFavoriteIconTap: (isFavorite){
+                          BlocProvider.of<AddToFavoriteBloc>(context).addToFavorite(selectedPokemonId: eachPokemon.id, isFavorite: isFavorite);
+                        },
+                        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => PokemonDetailPage(selectedPokemon: eachPokemon,),),),
+                      );
+                    },
+                  );
+                }
                 return Lottie.asset('assets/66414-processing-loading.json', width: 100);
               },
             ),
@@ -93,12 +121,22 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
-
+        onTap: (index) {
+          if(index == 0){
+            if(isFavorite){
+              BlocProvider.of<GetAllPokemonBloc>(context).filterByFavoritePokemon();
+            }
+            else{
+              BlocProvider.of<GetAllPokemonBloc>(context).refreshOffline();
+            }
+            setState(() {
+              isFavorite = !isFavorite;
+            });
+          }
         },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(label: '', icon: Icon(Icons.favorite, color: Colors.red,),),
-          BottomNavigationBarItem(label: '', icon: Icon(Icons.search),),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(label: '', icon: isFavorite ? const Icon(Icons.favorite, color: Colors.red,) : const Icon(Icons.favorite_outline),),
+          const BottomNavigationBarItem(label: '', icon: Icon(Icons.search),),
         ],
       ),
     );

@@ -71,6 +71,7 @@ class PokemonCard extends StatelessWidget {
               top: 0,
               child: FavoriteIconButton(
                 onTap: onFavoriteIconTap,
+                isFavorite: pokemon.isFavorite,
               ),
             ),
           ],
@@ -82,7 +83,8 @@ class PokemonCard extends StatelessWidget {
 
 class FavoriteIconButton extends StatefulWidget {
   final void Function(bool isFavoriteSelected)? onTap;
-  const FavoriteIconButton({Key? key, this.onTap,}) : super(key: key);
+  final bool isFavorite;
+  const FavoriteIconButton({Key? key, this.onTap, required this.isFavorite,}) : super(key: key);
 
   @override
   State<FavoriteIconButton> createState() => _FavoriteIconButtonState();
@@ -90,7 +92,12 @@ class FavoriteIconButton extends StatefulWidget {
 
 class _FavoriteIconButtonState extends State<FavoriteIconButton> {
 
-  bool _isFavoriteSelected = false;
+  late bool _isFavoriteSelected;
+  @override
+  void initState() {
+    _isFavoriteSelected = widget.isFavorite;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
