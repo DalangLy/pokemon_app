@@ -24,7 +24,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.light;
-  Locale _locale = Locale('en');
+  Locale _locale = const Locale('en');
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

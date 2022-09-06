@@ -45,13 +45,13 @@ class _HomePageState extends State<HomePage> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ListTile(
-                          title: const Text('English'),
+                          title: Text(AppLocalizations.of(context)!.english,),
                           onTap: (){
                             BlocProvider.of<LocalizeBloc>(context).changeLocale(locale: 'en');
                           },
                         ),
                         ListTile(
-                          title: const Text('Khmer'),
+                          title: Text(AppLocalizations.of(context)!.khmer,),
                           onTap: (){
                             BlocProvider.of<LocalizeBloc>(context).changeLocale(locale: 'km');
                           },
