@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pokemon_app/features/home/domain/entities/pokemon.dart';
+import 'package:pokemon_app/features/home/presentation/blocs/add_to_favorite/add_to_favorite_bloc.dart';
+import 'package:pokemon_app/features/home/presentation/widgets/pokemon_card.dart';
 
 class PokemonDetailPage extends StatelessWidget {
   final Pokemon selectedPokemon;
@@ -303,7 +306,12 @@ class FullSizedImagePreview extends StatelessWidget {
           Positioned(
             top: 5.0,
             right: 5.0,
-            child: pokemon.isFavorite ? const Icon(Icons.favorite, color: Colors.red, size: 40,) : const Icon(Icons.favorite_outline, size: 40,),
+            child: FavoriteIconButton(
+              onTap: (isFavorite){
+                BlocProvider.of<AddToFavoriteBloc>(context).addToFavorite(selectedPokemonId: pokemon.id, isFavorite: isFavorite);
+              },
+              isFavorite: pokemon.isFavorite,
+            )
           ),
         ],
       ),
